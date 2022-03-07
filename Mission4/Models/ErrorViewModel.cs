@@ -1,5 +1,5 @@
 ﻿using System;
-
+// Comment
 namespace Mission4.Models
 {
     public class ErrorViewModel
