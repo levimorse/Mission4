@@ -15,14 +15,65 @@ namespace Mission4.Migrations
             modelBuilder
                 .HasAnnotation("ProductVersion", "3.1.22");
 
+            modelBuilder.Entity("Mission4.Models.Category", b =>
+                {
+                    b.Property<int>("CategoryID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("CategoryName")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("CategoryID");
+
+                    b.ToTable("categories");
+
+                    b.HasData(
+                        new
+                        {
+                            CategoryID = 1,
+                            CategoryName = "Horror"
+                        },
+                        new
+                        {
+                            CategoryID = 2,
+                            CategoryName = "Fantasy"
+                        },
+                        new
+                        {
+                            CategoryID = 3,
+                            CategoryName = "Chick Flick"
+                        },
+                        new
+                        {
+                            CategoryID = 4,
+                            CategoryName = "Comedy"
+                        },
+                        new
+                        {
+                            CategoryID = 5,
+                            CategoryName = "Action"
+                        },
+                        new
+                        {
+                            CategoryID = 6,
+                            CategoryName = "History"
+                        },
+                        new
+                        {
+                            CategoryID = 7,
+                            CategoryName = "Western"
+                        });
+                });
+
             modelBuilder.Entity("Mission4.Models.MovieDatabase", b =>
                 {
                     b.Property<int>("MovieID")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<string>("Category")
-                        .HasColumnType("TEXT");
+                    b.Property<int>("CategoryID")
+                        .HasColumnType("INTEGER");
 
                     b.Property<string>("Director")
                         .HasColumnType("TEXT");
@@ -47,13 +98,15 @@ namespace Mission4.Migrations
 
                     b.HasKey("MovieID");
 
+                    b.HasIndex("CategoryID");
+
                     b.ToTable("info");
 
                     b.HasData(
                         new
                         {
                             MovieID = 1,
-                            Category = "Horror",
+                            CategoryID = 1,
                             Director = "Guard",
                             Edited = false,
                             Rating = "PG-13",
@@ -63,7 +116,7 @@ namespace Mission4.Migrations
                         new
                         {
                             MovieID = 2,
-                            Category = "Fantasy",
+                            CategoryID = 2,
                             Director = "Alfonso Cuaron",
                             Edited = false,
                             Rating = "PG",
@@ -73,13 +126,22 @@ namespace Mission4.Migrations
                         new
                         {
                             MovieID = 3,
-                            Category = "Chick Flick",
+                            CategoryID = 3,
                             Director = "Robert Luketic",
                             Edited = false,
                             Rating = "PG-13",
                             Title = "Legally Blonde",
                             Year = 2001
                         });
+                });
+
+            modelBuilder.Entity("Mission4.Models.MovieDatabase", b =>
+                {
+                    b.HasOne("Mission4.Models.Category", "Category")
+                        .WithMany()
+                        .HasForeignKey("CategoryID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 #pragma warning restore 612, 618
         }

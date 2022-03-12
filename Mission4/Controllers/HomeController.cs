@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Mission4.Models;
 
@@ -11,13 +12,10 @@ namespace Mission4.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
-
         private MovieContext _movieContext { get; set; }
 
-        public HomeController(ILogger<HomeController> logger, MovieContext singleMovie)
+        public HomeController(MovieContext singleMovie)
         {
-            _logger = logger;
             _movieContext = singleMovie;
         }
 
@@ -29,6 +27,8 @@ namespace Mission4.Controllers
         [HttpGet]
         public IActionResult Form()
         {
+            ViewBag.Categories = _movieContext.categories.ToList();
+
             return View();
         }
 
@@ -40,10 +40,14 @@ namespace Mission4.Controllers
             return View("Confirmation", md);
         }
 
-        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        public IActionResult Error()
+        public IActionResult MovieList()
         {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+            var fullMovieList = _movieContext.info
+                .Include(x => x.Category)
+                .OrderBy(x => x.Title)
+                .ToList();
+
+            return View(fullMovieList);
         }
     }
 }
