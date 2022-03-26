@@ -35,9 +35,17 @@ namespace Mission4.Controllers
         [HttpPost]
         public IActionResult Form(MovieDatabase md)
         {
-            _movieContext.Add(md);
-            _movieContext.SaveChanges();
-            return View("Confirmation", md);
+            if (ModelState.IsValid)
+            {
+                _movieContext.Add(md);
+                _movieContext.SaveChanges();
+                return View("Confirmation", md);
+            }
+            else
+            {
+                return View(md);
+            }
+            
         }
 
         public IActionResult MovieList()
@@ -49,5 +57,15 @@ namespace Mission4.Controllers
 
             return View(fullMovieList);
         }
+
+        [HttpGet]
+        public IActionResult Delete(int id)
+        {
+            var x = _movieContext.info.Single(x => x.MovieID == id);
+            _movieContext.Remove(x);
+            _movieContext.SaveChanges();
+            return RedirectToAction("MovieList");
+        }
+
     }
 }
