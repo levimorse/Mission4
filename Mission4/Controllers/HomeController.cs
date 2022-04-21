@@ -58,6 +58,25 @@ namespace Mission4.Controllers
             return View(fullMovieList);
         }
 
+        //[HttpGet]
+        //public IActionResult Edit (int id)
+        //{
+        //    ViewBag.Movies = _movieContext.info.Include(x => x.Category).ToList();
+
+        //    var movie = _movieContext.info.Single(x => x.MovieID == id);
+
+        //    return View("Form", movie);
+        //}
+
+        //[HttpPost]
+        //public IActionResult Edit (MovieDatabase md)
+        //{
+        //    _movieContext.Update(md);
+        //    _movieContext.SaveChanges();
+
+        //    return RedirectToAction("MovieList");
+        //}
+
         [HttpGet]
         public IActionResult Delete(int id)
         {
